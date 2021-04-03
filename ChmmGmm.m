@@ -6,7 +6,7 @@
 % input:
 %   Data        cell of data
 %   state_num   state num
-%   mix_num     multinominal num
+%   mix_num     multinominal num������
 % varargin input:
 %   p_start0    p(z1), size: Q*1
 %   A           p(zn|zn-1), transform matrix, size: Q*Q
@@ -76,18 +76,21 @@ if (~exist('converge'))
     converge = 1 + 1e-4;
 end
 
-pre_ll = -inf;
-obj_num = length(Data);
+pre_ll = -inf; % �����������ж��Ƿ���Խ���train�ı�־��pre_ll�������仯����С�ڸ�����ֵ����ֹͣtrain
+obj_num = length(Data);  %�������Data��ֵ�õ���obj_numֵΪ4
+% Data{1}/Data{2}����90�����ݵ㣬Ϊ���㼯��Data{1}/Data{2}��3����ά��̬�ֲ�����㼯���ɣ��Ҷ��߲���һ��
+% Data{1}/Data{2}����80�����ݵ㣬Ϊ�Ҳ�㼯
+% obj_num�����к��ã�Ϊ��Ҫ�ֳ������������ݣ�ΪʲôE-stepʱ����������Ҫ�ֿ����У�
 for k = 1:iter_num
     % E STEP
-    for r = 1:obj_num
+    for r = 1:obj_num %���������õ���phi��p_start��A�����Ի��ˣ����ǳ�ʼ��ֵ������Ϊ���ֵ
         logp_xn_given_zn = Gmm_logp_xn_given_zn(Data{r}, phi);
         [LogGamma{r}, LogKsi{r}, Loglik{r}] = LogForwardBackward(logp_xn_given_zn, p_start, A);
         logp_xn_given_vn = Get_logp_xn_given_vn(Data{r}, phi);
         LogIta{r} = CalculateLogIta(logp_xn_given_vn, p_start, A, phi);
     end
     
-    % convert loggamma to gamma, logksi to ksi, substract the max
+    % convert loggamma to gamma, logksi to ksi, substract����ȥ���۵���the max
     [Gamma, Ksi] = UniformLogGammaKsi(LogGamma, LogKsi);
     
     % convert logita to ita, substract the max
@@ -140,7 +143,7 @@ for k = 1:iter_num
     for r = 1:obj_num
         loglik = loglik + Loglik{r};
     end
-    if (loglik-pre_ll<log(converge)) break;
+    if (loglik-pre_ll<log(converge)) break; %loglik��������ʱ��˵�������ٸ������岻���ˣ����ֹͣѵ��
     else pre_ll = loglik; end
 end
 

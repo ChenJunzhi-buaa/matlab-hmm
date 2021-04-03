@@ -1,4 +1,5 @@
 % SUMMARY:  Log Forward Backward, to solve overflow problem
+%        （？？？是overflow？？pdf文档里提到的都是underflow呀？）
 % AUTHOR:   QIUQIANG KONG
 % Created:  18-11-2015
 % Modified: 19-11-2015 modify max to sum (exact solution)
@@ -12,7 +13,7 @@
 %   A              p(zn|zn-1), size: Q*Q
 % output:
 %   loggamma       ln p(zn|X), size: N*Q
-%   logksi         ln p(zn,zn-1|X), size: N*Q*Q
+%   logksi         ln p(zn,zn-1|X),  size: N*Q*Q
 %   loglik         ln p(X), to monitor convergence
 % ===========================================================
 function [loggamma, logksi, loglik] = LogForwardBackward(logp_xn_given_zn, p_start, A)

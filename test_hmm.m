@@ -9,9 +9,9 @@ close all
 addpath('matlab-gmm')
 
 % pseudo ranom
-% rng(0)
+% rng(0) %控制随机数生成
 
-choose = 1;     % can be 1, 2, 3 or 4
+choose = 4;     % can be 1, 2, 3 or 4
 
 switch choose
     case 1
@@ -136,7 +136,7 @@ end
 function ChmmGaussMixTest()
 % Generate Data
 for i1 = 1:2
-    X1 = mvnrnd([0,0], [0.5, 0.2; 0.2, 0.3]/5, 20);
+    X1 = mvnrnd([0,0], [0.5, 0.2; 0.2, 0.3]/5, 20); %参数应该分别是均值，协方差，点数
     X2 = mvnrnd([0,2], [0.3, -0.2; -0.2, 0.5]/5, 30);
     X3 = mvnrnd([0,4], [0.5, 0; 0, 0.3]/5, 40);
     X = [X1; X2; X3];
@@ -149,7 +149,9 @@ for i1 = 3:4
     X = [X1; X2; X3];
     Data{i1} = X;
 end
-Xall = cell2mat(Data');
+% Data{1}/Data{2}各有90个数据点，为左侧点集，Data{1}/Data{2}由3个二维正态分布随机点集生成，且二者参数一样
+% Data{1}/Data{2}各有80个数据点，为右侧点集
+Xall = cell2mat(Data'); 
 scatter(Xall(:,1), Xall(:,2), '.'); hold on
 
 Q = 3;      % state num
@@ -180,4 +182,6 @@ for q = 1:Q
 end
 
 end
+
+
 
